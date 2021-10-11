@@ -1,0 +1,13 @@
+name:
+  test
+on:
+  push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+      - run: "qmake"
+      - run: "make -j8"
