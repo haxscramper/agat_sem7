@@ -76,14 +76,16 @@ void MainWindow::loadPlugins() {
     }
 #endif
     pluginsDir.cd("plugins");
-    qDebug() << "Loading plugins from " << pluginsDir << " directory";
+    qDebug() << "Loading plugins from" << pluginsDir.path() << "directory";
     const QStringList entries = pluginsDir.entryList(QDir::Files);
     for (const QString& fileName : entries) {
+        qDebug() << "Found plugin file" << fileName;
         QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
         QObject*      plugin = pluginLoader.instance();
         if (plugin) {
             auto iface = qobject_cast<PluginInterface*>(plugin);
             if (iface) {
+                qDebug() << "Found matching plugin file";
                 plugins.append(iface);
             } else {
                 pluginLoader.unload();
