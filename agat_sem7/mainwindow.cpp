@@ -1,8 +1,8 @@
 #include "mainwindow.hpp"
 #include <QDebug>
 #include <QVBoxLayout>
-
-
+#include <QInputDialog>
+#include <QLabel>
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , central(new QSplitter(this))
@@ -15,6 +15,12 @@ MainWindow::MainWindow(QWidget* parent)
 //  ,
 {
     this->setMenuBar(toolbar);
+    this->menuBar()->addAction(
+           "Задача 1");
+    this->menuBar()->addAction(
+           "Задача 2");
+    this->menuBar()->addAction(
+           "Задача 3");
 
     setCentralWidget(central);
 
@@ -24,9 +30,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     this->setStatusBar(status);
 
-
     setViews();
-
     central->addWidget(mapFrame);
     central->addWidget(dataInputFrame);
 }
@@ -36,14 +40,11 @@ QMenuBar*  MainWindow::getToolbar() const { return toolbar; }
 MapWidget* MainWindow::getMapFrame() const { return map; }
 QFrame*    MainWindow::getDataInputFrame() const { return dataInput; }
 
+
 void MainWindow::addActionBuilder(Action* builder) {
+
     this->menuBar()->addAction(
-        builder->getActionName(), builder, [builder, this]() {
-            qDebug() << "Triggered action";
-            this->status->setActiveAction(builder->getActionName());
-            builder->fillWidgets(this->map, this->dataInput);
-            this->setViews();
-        });
+        builder->getActionName(), new Reciever(builder, this), SLOT(triggered()));
 }
 
 void MainWindow::setViews() {
@@ -64,4 +65,12 @@ void MainWindow::setViews() {
 
         lyt->addWidget(dataInput);
     }
+
+}
+
+void Reciever::triggered() {
+    qDebug() << "Triggered action";
+    mainwindow->status->setActiveAction(builder->getActionName());
+    builder->fillWidgets(mainwindow->map, mainwindow->dataInput);
+    mainwindow->setViews();
 }
