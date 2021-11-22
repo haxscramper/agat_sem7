@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget* parent)
 
     central->addWidget(mapFrame);
     central->addWidget(dataInputFrame);
+
+    this->menuBar()->addAction(
+        "Task 1", []() { qDebug() << "Triggered action"; });
 }
 
 QSplitter* MainWindow::getCentral() const { return central; }
