@@ -5,16 +5,16 @@
 #include <QString>
 
 class QFrame;
-class QAction;
-class MapWideget;
+class QMenu;
+class MapWidget;
 
 class PluginInterface
 {
   public:
     virtual ~PluginInterface() = default;
 
-    virtual QAction* setup(QFrame* dataInputFrame, MapWideget* map) = 0;
-    virtual void     tick()                                         = 0;
+    virtual QMenu* setup(QFrame* dataInputFrame, MapWidget* map) = 0;
+    virtual void   tick()                                        = 0;
 };
 
 QT_BEGIN_NAMESPACE

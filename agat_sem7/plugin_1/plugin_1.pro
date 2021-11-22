@@ -9,3 +9,5 @@ DESTDIR =  $$PWD/..
 
 HEADERS += plugin1.hpp
 SOURCES += plugin1.cpp
+
+CONFIG += install_ok

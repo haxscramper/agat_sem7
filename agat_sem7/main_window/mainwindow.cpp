@@ -34,6 +34,11 @@ MainWindow::MainWindow(QWidget* parent)
     central->addWidget(dataInputFrame);
 
     loadPlugins();
+
+    for (auto plugin : plugins) {
+        auto menu = plugin->setup(dataInputFrame, map);
+        this->toolbar->addMenu(menu);
+    }
 }
 
 QSplitter* MainWindow::getCentral() const { return central; }
@@ -79,10 +84,13 @@ void MainWindow::loadPlugins() {
     qDebug() << "Loading plugins from" << pluginsDir.path() << "directory";
     const QStringList entries = pluginsDir.entryList(QDir::Files);
     for (const QString& fileName : entries) {
-        qDebug() << "Found plugin file" << fileName;
-        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+        auto file = pluginsDir.absoluteFilePath(fileName);
+        qDebug() << "Found plugin file" << file;
+        QPluginLoader pluginLoader(file);
         QObject*      plugin = pluginLoader.instance();
+
         if (plugin) {
+            qDebug() << "Loaded plugin";
             auto iface = qobject_cast<PluginInterface*>(plugin);
             if (iface) {
                 qDebug() << "Found matching plugin file";
@@ -90,6 +98,8 @@ void MainWindow::loadPlugins() {
             } else {
                 pluginLoader.unload();
             }
+        } else {
+            qWarning() << pluginLoader.errorString();
         }
     }
 }

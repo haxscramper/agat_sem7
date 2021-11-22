@@ -16,10 +16,13 @@ class Plugin2
   public:
     Plugin2();
 
+  public slots:
+    void menuSelected();
+
     // PluginInterface interface
   public:
-    QAction* setup(QFrame* dataInputFrame, MapWideget* map) override;
-    void     tick() override;
+    QMenu* setup(QFrame* dataInputFrame, MapWidget* map) override;
+    void   tick() override;
 };
 
 #endif // PLUGIN2_HPP

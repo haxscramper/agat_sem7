@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
     MainWindow   w;
     w.resize(600, 800);
 
-    //    w.show();
-    //    return a.exec();
+    w.show();
+    return a.exec();
 
     qDebug() << "Execution ok";
 }
