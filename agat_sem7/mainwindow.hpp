@@ -12,10 +12,24 @@
 #include <QSplitter>
 #include <QVector>
 
+class MainWindow;
+
+class Reciever : public QObject {
+    Q_OBJECT
+    public:
+        Reciever(Action* _builder, MainWindow* _mainwindow):
+            builder(_builder), mainwindow(_mainwindow) {}
+        Action* builder;
+        MainWindow* mainwindow;
+    public slots:
+        void triggered();
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
   public:
+    friend class Reciever;
     explicit MainWindow(QWidget* parent = nullptr);
 
     QSplitter* getCentral() const;
