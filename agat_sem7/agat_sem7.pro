@@ -14,6 +14,7 @@ HEADERS += \
     exampleaction.hpp \
     mainwindow.hpp \
     mapwidget.hpp \
+    plugininterface.hpp \
     statusbar.hpp
 
 # Default rules for deployment.

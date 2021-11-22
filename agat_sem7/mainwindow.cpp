@@ -1,5 +1,8 @@
 #include "mainwindow.hpp"
+#include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
+#include <QPluginLoader>
 #include <QVBoxLayout>
 
 
@@ -30,8 +33,7 @@ MainWindow::MainWindow(QWidget* parent)
     central->addWidget(mapFrame);
     central->addWidget(dataInputFrame);
 
-    this->menuBar()->addAction(
-        "Task 1", []() { qDebug() << "Triggered action"; });
+    loadPlugins();
 }
 
 QSplitter* MainWindow::getCentral() const { return central; }
@@ -39,15 +41,6 @@ QMenuBar*  MainWindow::getToolbar() const { return toolbar; }
 MapWidget* MainWindow::getMapFrame() const { return map; }
 QFrame*    MainWindow::getDataInputFrame() const { return dataInput; }
 
-void MainWindow::addActionBuilder(Action* builder) {
-    this->menuBar()->addAction(
-        builder->getActionName(), builder, [builder, this]() {
-            qDebug() << "Triggered action";
-            this->status->setActiveAction(builder->getActionName());
-            builder->fillWidgets(this->map, this->dataInput);
-            this->setViews();
-        });
-}
 
 void MainWindow::setViews() {
     QLayoutItem* wItem;
@@ -66,5 +59,35 @@ void MainWindow::setViews() {
         }
 
         lyt->addWidget(dataInput);
+    }
+}
+
+void MainWindow::loadPlugins() {
+    QDir pluginsDir(QCoreApplication::applicationDirPath());
+#if defined(Q_OS_WIN)
+    if (pluginsDir.dirName().toLower() == "debug"
+        || pluginsDir.dirName().toLower() == "release")
+        pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS") {
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+    }
+#endif
+    pluginsDir.cd("plugins");
+    qDebug() << "Loading plugins from " << pluginsDir << " directory";
+    const QStringList entries = pluginsDir.entryList(QDir::Files);
+    for (const QString& fileName : entries) {
+        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+        QObject*      plugin = pluginLoader.instance();
+        if (plugin) {
+            auto iface = qobject_cast<PluginInterface*>(plugin);
+            if (iface) {
+                plugins.append(iface);
+            } else {
+                pluginLoader.unload();
+            }
+        }
     }
 }

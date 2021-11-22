@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 
-#include "action.hpp"
 #include "mapwidget.hpp"
+#include "plugininterface.hpp"
 
 #include "statusbar.hpp"
 #include <QFrame>
@@ -22,12 +22,11 @@ class MainWindow : public QMainWindow
     QMenuBar*  getToolbar() const;
     MapWidget* getMapFrame() const;
     QFrame*    getDataInputFrame() const;
-    void       addActionBuilder(Action* builder);
 
   signals:
 
   private:
-    QVector<Action*> actions;
+    QVector<PluginInterface*> plugins;
 
     QSplitter* central = nullptr;
     QMenuBar*  toolbar = nullptr;
@@ -40,6 +39,8 @@ class MainWindow : public QMainWindow
     StatusBar* status = nullptr;
 
     void setViews();
+
+    void loadPlugins();
 };
 
 #endif // MAINWINDOW_HPP
