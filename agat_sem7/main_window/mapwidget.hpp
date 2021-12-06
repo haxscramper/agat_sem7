@@ -3,9 +3,9 @@
 
 #include "ship.h"
 
+#include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QObject>
-#include <QGraphicsScene>
 
 class MapWidget : public QGraphicsView
 {
@@ -13,15 +13,27 @@ class MapWidget : public QGraphicsView
   public:
     MapWidget();
 
-    explicit MapWidget(int h, int w,QWidget *parent = nullptr);
+    explicit MapWidget(int h, int w, QWidget* parent = nullptr);
 
-    void drawShip(int id, double x, double y,int course);
+    void drawShip(int id, double x, double y, int course);
 
-    void drawEnemyShip(int id, double x, double y,int course);
+    void drawEnemyShip(int id, double x, double y, int course);
 
-    void drawLine(int idLine, double x1, double y1, double x2, double y2, QPen pen);
+    void drawLine(
+        int    idLine,
+        double x1,
+        double y1,
+        double x2,
+        double y2,
+        QPen   pen);
 
-    void drawEllipse(int idElips, double x1, double y1, double x2, double y2, QPen pen);
+    void drawEllipse(
+        int    idElips,
+        double x1,
+        double y1,
+        double x2,
+        double y2,
+        QPen   pen);
 
     QGraphicsView*  getView() const;
     QGraphicsScene* getScene() const;
@@ -31,10 +43,10 @@ class MapWidget : public QGraphicsView
     QGraphicsScene* scene = nullptr;
 
     QGraphicsScene scene_1;
-    Ship *ship;
-    Ship *enemy_ship;
+    Ship*          ship;
+    Ship*          enemy_ship;
 
-    int scale = 1; // масштаб карты
+    int  scale = 1; // масштаб карты
     void SetupMetrix();
 };
 
