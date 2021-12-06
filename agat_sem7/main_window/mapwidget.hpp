@@ -10,7 +10,6 @@ class MapWidget : public QWidget
   public:
     MapWidget();
 
-
     QGraphicsView*  getView() const;
     QGraphicsScene* getScene() const;
 

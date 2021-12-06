@@ -8,6 +8,7 @@ INSTALLS += target
 DESTDIR =  $$PWD/..
 
 HEADERS += plugin2.hpp
-SOURCES += plugin2.cpp
+SOURCES += plugin2.cpp \
+    ../main_window/mapwidget.cpp
 
 CONFIG += install_ok
