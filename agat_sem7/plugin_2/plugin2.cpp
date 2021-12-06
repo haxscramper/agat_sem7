@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <QMenu>
+#include <mapwidget.hpp>
 
 Plugin2::Plugin2() {}
 

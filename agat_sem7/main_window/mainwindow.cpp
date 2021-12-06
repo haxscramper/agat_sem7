@@ -28,6 +28,8 @@ MainWindow::MainWindow(QWidget* parent)
     this->setStatusBar(status);
 
 
+    //// ----
+
     setViews();
 
     central->addWidget(mapFrame);
