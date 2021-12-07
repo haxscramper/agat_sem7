@@ -5,6 +5,8 @@
 #include <QPluginLoader>
 #include <QVBoxLayout>
 
+#include "mapwidget.hpp"
+
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -12,7 +14,7 @@ MainWindow::MainWindow(QWidget* parent)
     , toolbar(new QMenuBar(this))
     , mapFrame(new QFrame(this))
     , dataInputFrame(new QFrame(this))
-    , map(new MapWidget())
+    , map(new MapWidget(700,700))
     , dataInput(new QFrame(this))
     , status(new StatusBar(this))
 //  ,
@@ -20,15 +22,21 @@ MainWindow::MainWindow(QWidget* parent)
     this->setMenuBar(toolbar);
 
     setCentralWidget(central);
+    //--------------------------------------------------------------------------
+    // MapWidget canvas(700,700);
 
+    map->drawShip(0,100,100,-60);
+    map->drawEnemyShip(0,400,300,60);
 
+    map->drawLine(1,100,100,400,300,QPen(Qt::green, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
+    map->drawEllipse(1,30,30,150,150,QPen(Qt::green, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
+
+    // -----------------------------------------------------------------------------------------
     mapFrame->setLayout(new QVBoxLayout());
     dataInputFrame->setLayout(new QVBoxLayout());
 
     this->setStatusBar(status);
 
-
-    //// ----
 
     setViews();
 
