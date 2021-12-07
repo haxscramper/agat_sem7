@@ -10,7 +10,7 @@
 class MapWidget : public QGraphicsView
 {
     Q_OBJECT
-  public:
+public:
     MapWidget();
 
     explicit MapWidget(int h, int w,QWidget *parent = nullptr);
@@ -26,15 +26,15 @@ class MapWidget : public QGraphicsView
     QGraphicsView*  getView() const;
     QGraphicsScene* getScene() const;
 
-  private:
-    QGraphicsView*  view  = nullptr;
-    QGraphicsScene* scene = nullptr;
+private:
+    //QGraphicsView canvas;
+    //QGraphicsScene* scene = nullptr;
 
-    QGraphicsScene scene_1;
+    QGraphicsScene scene;
     Ship *ship;
     Ship *enemy_ship;
 
-    int scale = 1; // масштаб карты
+    //int scale = 1; // масштаб карты
     void SetupMetrix();
 };
 
