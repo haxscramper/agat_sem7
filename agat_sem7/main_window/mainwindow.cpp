@@ -25,9 +25,10 @@ MainWindow::MainWindow(QWidget* parent)
 
     this->setStatusBar(status);
 
-    zoom->setRange(10, 500);
+    zoom->setRange(0, 800);
     rotation->setRange(-360, 360);
     zoom->setValue(100);
+    zoom->setSingleStep(10);
     rotation->setValue(0);
     status->addWidget(zoom);
     status->addWidget(rotation);
