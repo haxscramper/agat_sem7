@@ -4,6 +4,11 @@
 #include <QtPlugin>
 #include <plugininterface.hpp>
 
+
+class MapScene;
+class QFrame;
+
+
 class Plugin1
     : public QObject
     , PluginInterface
@@ -15,6 +20,11 @@ class Plugin1
 
   public:
     Plugin1();
+
+
+  private:
+    MapScene* scene;
+    QFrame*   frame;
 
     // PluginInterface interface
   public:

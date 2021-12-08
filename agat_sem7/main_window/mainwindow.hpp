@@ -26,8 +26,18 @@ class MainWindow : public QMainWindow
 
   signals:
 
+  private slots:
+    void pluginSelected();
+
   private:
-    QVector<PluginInterface*> plugins;
+    struct LoadedPlugin {
+        PluginInterface* iface;
+        MapScene*        scene;
+        QFrame*          frame;
+        QMenu*           menu;
+    };
+
+    QVector<LoadedPlugin> plugins;
 
     QSplitter*     central        = nullptr;
     QMenuBar*      toolbar        = nullptr;

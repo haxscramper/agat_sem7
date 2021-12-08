@@ -11,6 +11,7 @@ class MapScene;
 struct SetupResults {
     QMenu*    menu;
     MapScene* scene;
+    QFrame*   dataFrame;
 };
 
 class PluginInterface

@@ -1,9 +1,12 @@
 #include "plugin2.hpp"
 
 #include <QDebug>
+#include <QFrame>
 #include <QMenu>
 
-Plugin2::Plugin2() {}
+#include "mapscene.hpp"
+
+Plugin2::Plugin2() : scene(new MapScene()), frame(new QFrame()) {}
 
 void Plugin2::menuSelected() { qDebug() << "Menu selected action"; }
 
@@ -15,7 +18,7 @@ SetupResults Plugin2::setup(QFrame* dataInputFrame) {
 
     connect(action, &QAction::triggered, this, &Plugin2::menuSelected);
 
-    return {menu, nullptr};
+    return {menu, scene, frame};
 }
 
 void Plugin2::tick() {}

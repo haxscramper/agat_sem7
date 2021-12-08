@@ -4,6 +4,9 @@
 #include <QtPlugin>
 #include <plugininterface.hpp>
 
+class MapScene;
+class QFrame;
+
 class Plugin2
     : public QObject
     , PluginInterface
@@ -15,6 +18,10 @@ class Plugin2
 
   public:
     Plugin2();
+
+  private:
+    MapScene* scene;
+    QFrame*   frame;
 
   public slots:
     void menuSelected();
