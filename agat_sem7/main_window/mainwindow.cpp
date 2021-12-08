@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget* parent)
 
     map->setScene(new MapScene());
 
-
     mapFrame->setLayout(new QVBoxLayout());
     dataInputFrame->setLayout(new QVBoxLayout());
     this->setStatusBar(status);
@@ -59,19 +58,16 @@ void MainWindow::loadPlugins() {
     }
 #endif
     pluginsDir.cd("plugins");
-    qDebug() << "Loading plugins from" << pluginsDir.path() << "directory";
     const QStringList entries = pluginsDir.entryList(QDir::Files);
     for (const QString& fileName : entries) {
-        auto file = pluginsDir.absoluteFilePath(fileName);
-        qDebug() << "Found plugin file" << file;
+        auto          file = pluginsDir.absoluteFilePath(fileName);
         QPluginLoader pluginLoader(file);
         QObject*      plugin = pluginLoader.instance();
 
         if (plugin) {
-            qDebug() << "Loaded plugin";
             auto iface = qobject_cast<PluginInterface*>(plugin);
             if (iface) {
-                qDebug() << "Found matching plugin file";
+                qDebug() << "Found matching plugin file" << file;
                 plugins.append(iface);
             } else {
                 pluginLoader.unload();
