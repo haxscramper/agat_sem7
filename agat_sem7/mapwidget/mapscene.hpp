@@ -1,15 +1,15 @@
-#ifndef MAPWIDGET_HPP
-#define MAPWIDGET_HPP
+#ifndef MAPSCENE_H
+#define MAPSCENE_H
 
-#include "mapwidget_global.hpp"
+#include "mapscene_global.hpp"
 #include "ship.hpp"
 #include <QGraphicsView>
 
-class MAPWIDGET_EXPORT MapWidget : public QGraphicsView
+class MAPWIDGET_EXPORT MapScene : public QGraphicsScene
 {
     Q_OBJECT
   public:
-    explicit MapWidget(int h, int w, QWidget* parent = nullptr);
+    explicit MapScene();
 
     void drawShip(int id, double x, double y, int course);
 
@@ -35,15 +35,10 @@ class MAPWIDGET_EXPORT MapWidget : public QGraphicsView
     QGraphicsScene* getScene() const;
 
   private:
-    // QGraphicsView canvas;
-    // QGraphicsScene* scene = nullptr;
+    Ship* ship;
+    Ship* enemy_ship;
 
-    QGraphicsScene scene;
-    Ship*          ship;
-    Ship*          enemy_ship;
-
-    // int scale = 1; // масштаб карты
     void SetupMetrix();
 };
 
-#endif // MAPWIDGET_HPP
+#endif // MAPSCENE_H

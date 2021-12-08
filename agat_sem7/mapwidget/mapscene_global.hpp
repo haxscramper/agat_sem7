@@ -1,5 +1,5 @@
-#ifndef MAPWIDGET_GLOBAL_HPP
-#define MAPWIDGET_GLOBAL_HPP
+#ifndef MAPSCENE_GLOBAL_H
+#define MAPSCENE_GLOBAL_H
 
 #include <QtCore/qglobal.h>
 
@@ -9,4 +9,4 @@
 #  define MAPWIDGET_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // MAPWIDGET_GLOBAL_HPP
+#endif // MAPSCENE_GLOBAL_H

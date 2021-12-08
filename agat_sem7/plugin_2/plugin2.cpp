@@ -7,7 +7,7 @@ Plugin2::Plugin2() {}
 
 void Plugin2::menuSelected() { qDebug() << "Menu selected action"; }
 
-QMenu* Plugin2::setup(QFrame* dataInputFrame, MapWidget* map) {
+SetupResults Plugin2::setup(QFrame* dataInputFrame) {
     QMenu*   menu   = new QMenu("Poshel nagui");
     QAction* action = new QAction("Example action", menu);
 
@@ -15,7 +15,7 @@ QMenu* Plugin2::setup(QFrame* dataInputFrame, MapWidget* map) {
 
     connect(action, &QAction::triggered, this, &Plugin2::menuSelected);
 
-    return menu;
+    return {menu, nullptr};
 }
 
 void Plugin2::tick() {}

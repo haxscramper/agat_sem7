@@ -21,8 +21,8 @@ class Plugin2
 
     // PluginInterface interface
   public:
-    QMenu* setup(QFrame* dataInputFrame, MapWidget* map) override;
-    void   tick() override;
+    SetupResults setup(QFrame* dataInputFrame) override;
+    void         tick() override;
 };
 
 #endif // PLUGIN2_HPP

@@ -6,15 +6,20 @@
 
 class QFrame;
 class QMenu;
-class MapWidget;
+class MapScene;
+
+struct SetupResults {
+    QMenu*    menu;
+    MapScene* scene;
+};
 
 class PluginInterface
 {
   public:
     virtual ~PluginInterface() = default;
 
-    virtual QMenu* setup(QFrame* dataInputFrame, MapWidget* map) = 0;
-    virtual void   tick()                                        = 0;
+    virtual SetupResults setup(QFrame* dataInputFrame) = 0;
+    virtual void         tick()                        = 0;
 };
 
 QT_BEGIN_NAMESPACE

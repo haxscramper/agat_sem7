@@ -1,4 +1,5 @@
 #include "mainwindow.hpp"
+#include "mapscene.hpp"
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
@@ -12,7 +13,7 @@ MainWindow::MainWindow(QWidget* parent)
     , toolbar(new QMenuBar(this))
     , mapFrame(new QFrame(this))
     , dataInputFrame(new QFrame(this))
-    , map(new MapWidget(120, 120))
+    , map(new QGraphicsView())
     , dataInput(new QFrame(this))
     , status(new StatusBar(this))
 //  ,
@@ -20,6 +21,8 @@ MainWindow::MainWindow(QWidget* parent)
     this->setMenuBar(toolbar);
 
     setCentralWidget(central);
+
+    map->setScene(new MapScene());
 
 
     mapFrame->setLayout(new QVBoxLayout());
@@ -33,14 +36,13 @@ MainWindow::MainWindow(QWidget* parent)
     loadPlugins();
 
     foreach (auto plugin, plugins) {
-        auto menu = plugin->setup(dataInputFrame, map);
-        this->toolbar->addMenu(menu);
+        SetupResults res = plugin->setup(dataInputFrame);
+        this->toolbar->addMenu(res.menu);
     }
 }
 
 QSplitter* MainWindow::getCentral() const { return central; }
 QMenuBar*  MainWindow::getToolbar() const { return toolbar; }
-MapWidget* MainWindow::getMapFrame() const { return map; }
 QFrame*    MainWindow::getDataInputFrame() const { return dataInput; }
 
 void MainWindow::loadPlugins() {
