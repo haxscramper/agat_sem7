@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget* parent)
     , toolbar(new QMenuBar(this))
     , mapFrame(new QFrame(this))
     , dataInputFrame(new QFrame(this))
-    , map(new MapWidget())
+    , map(new MapWidget(120, 120))
     , dataInput(new QFrame(this))
     , status(new StatusBar(this))
 //  ,
@@ -24,18 +24,15 @@ MainWindow::MainWindow(QWidget* parent)
 
     mapFrame->setLayout(new QVBoxLayout());
     dataInputFrame->setLayout(new QVBoxLayout());
-
     this->setStatusBar(status);
 
-
-    setViews();
-
     central->addWidget(mapFrame);
+    mapFrame->layout()->addWidget(map);
     central->addWidget(dataInputFrame);
 
     loadPlugins();
 
-    for (auto plugin : plugins) {
+    foreach (auto plugin, plugins) {
         auto menu = plugin->setup(dataInputFrame, map);
         this->toolbar->addMenu(menu);
     }
@@ -45,27 +42,6 @@ QSplitter* MainWindow::getCentral() const { return central; }
 QMenuBar*  MainWindow::getToolbar() const { return toolbar; }
 MapWidget* MainWindow::getMapFrame() const { return map; }
 QFrame*    MainWindow::getDataInputFrame() const { return dataInput; }
-
-
-void MainWindow::setViews() {
-    QLayoutItem* wItem;
-    {
-        auto lyt = mapFrame->layout();
-        while ((wItem = lyt->takeAt(0)) != 0) {
-            lyt->removeItem(wItem);
-        }
-
-        lyt->addWidget(map->getView());
-    }
-    {
-        auto lyt = dataInputFrame->layout();
-        while ((wItem = lyt->takeAt(0)) != 0) {
-            lyt->removeItem(wItem);
-        }
-
-        lyt->addWidget(dataInput);
-    }
-}
 
 void MainWindow::loadPlugins() {
     QDir pluginsDir(QCoreApplication::applicationDirPath());

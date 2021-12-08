@@ -1,0 +1,12 @@
+#ifndef MAPWIDGET_GLOBAL_HPP
+#define MAPWIDGET_GLOBAL_HPP
+
+#include <QtCore/qglobal.h>
+
+#if defined(MAPWIDGET_LIBRARY)
+#  define MAPWIDGET_EXPORT Q_DECL_EXPORT
+#else
+#  define MAPWIDGET_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // MAPWIDGET_GLOBAL_HPP

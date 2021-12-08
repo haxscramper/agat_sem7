@@ -12,6 +12,7 @@
 #include <QSplitter>
 #include <QVector>
 
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -37,8 +38,6 @@ class MainWindow : public QMainWindow
     QFrame*    dataInput = nullptr;
 
     StatusBar* status = nullptr;
-
-    void setViews();
 
     void loadPlugins();
 };
