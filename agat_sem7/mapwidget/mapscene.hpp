@@ -34,6 +34,10 @@ class MAPWIDGET_EXPORT MapScene : public QGraphicsScene
 
   private:
     QVector<Ship*> ships;
+
+    // QGraphicsScene interface
+  protected:
+    void drawBackground(QPainter* painter, const QRectF& rect) override;
 };
 
 #endif // MAPSCENE_H

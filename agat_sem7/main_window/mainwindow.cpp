@@ -5,32 +5,48 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <QVBoxLayout>
-
+#include <QtMath>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , central(new QSplitter(this))
     , toolbar(new QMenuBar(this))
-    , mapFrame(new QFrame(this))
     , dataInputFrame(new QFrame(this))
     , map(new QGraphicsView())
     , dataInput(new QFrame(this))
+    , zoom(new QSpinBox(this))
+    , rotation(new QSpinBox(this))
     , status(new StatusBar(this))
 //  ,
 {
     this->setMenuBar(toolbar);
     map->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    mapFrame->setSizePolicy(
-        QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     setCentralWidget(central);
 
-    mapFrame->setLayout(new QVBoxLayout());
     dataInputFrame->setLayout(new QVBoxLayout());
     this->setStatusBar(status);
 
-    central->addWidget(mapFrame);
-    mapFrame->layout()->addWidget(map);
+    zoom->setRange(10, 500);
+    rotation->setRange(-360, 360);
+    zoom->setValue(100);
+    rotation->setValue(0);
+    status->addWidget(zoom);
+    status->addWidget(rotation);
+
+    connect(
+        zoom,
+        static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+        this,
+        &MainWindow::zoomRotationChanged);
+
+    connect(
+        rotation,
+        static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+        this,
+        &MainWindow::zoomRotationChanged);
+
+    central->addWidget(map);
     central->addWidget(dataInputFrame);
 
     loadPlugins();
@@ -51,15 +67,13 @@ QSplitter* MainWindow::getCentral() const { return central; }
 QMenuBar*  MainWindow::getToolbar() const { return toolbar; }
 QFrame*    MainWindow::getDataInputFrame() const { return dataInput; }
 
+
 void MainWindow::pluginSelected() {
     auto sender = qobject_cast<QAction*>(QObject::sender());
     auto idx    = sender->property("index").toInt();
     map->setScene(plugins[idx].scene);
-    // a grid foreground
-    map->scene()->setBackgroundBrush(
-        QBrush(Qt::lightGray, Qt::CrossPattern));
 
-    auto lyt = mapFrame->layout();
+    auto lyt = dataInputFrame->layout();
 
     QLayoutItem* wItem;
     while ((wItem = lyt->takeAt(0)) != 0) {
@@ -67,6 +81,17 @@ void MainWindow::pluginSelected() {
     }
 
     dataInputFrame->layout()->addWidget(plugins[idx].frame);
+}
+
+void MainWindow::zoomRotationChanged() {
+    qreal scale = float(zoom->value()) / 100.0;
+
+
+    QTransform matrix;
+    matrix.scale(scale, scale);
+    matrix.rotate(rotation->value());
+
+    map->setTransform(matrix);
 }
 
 void MainWindow::loadPlugins() {

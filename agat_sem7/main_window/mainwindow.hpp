@@ -10,6 +10,7 @@
 #include <QFrame>
 #include <QGraphicsView>
 #include <QMenuBar>
+#include <QSpinBox>
 #include <QSplitter>
 #include <QVector>
 
@@ -28,6 +29,7 @@ class MainWindow : public QMainWindow
 
   private slots:
     void pluginSelected();
+    void zoomRotationChanged();
 
   private:
     struct LoadedPlugin {
@@ -41,10 +43,11 @@ class MainWindow : public QMainWindow
 
     QSplitter*     central        = nullptr;
     QMenuBar*      toolbar        = nullptr;
-    QFrame*        mapFrame       = nullptr;
     QFrame*        dataInputFrame = nullptr;
     QGraphicsView* map            = nullptr;
     QFrame*        dataInput      = nullptr;
+
+    QSpinBox *zoom, *rotation;
 
     StatusBar* status = nullptr;
 
