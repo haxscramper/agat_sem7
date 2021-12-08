@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget* parent)
 //  ,
 {
     this->setMenuBar(toolbar);
+    map->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mapFrame->setSizePolicy(
+        QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     setCentralWidget(central);
 
@@ -52,6 +55,9 @@ void MainWindow::pluginSelected() {
     auto sender = qobject_cast<QAction*>(QObject::sender());
     auto idx    = sender->property("index").toInt();
     map->setScene(plugins[idx].scene);
+    // a grid foreground
+    map->scene()->setBackgroundBrush(
+        QBrush(Qt::lightGray, Qt::CrossPattern));
 
     auto lyt = mapFrame->layout();
 
@@ -87,7 +93,7 @@ void MainWindow::loadPlugins() {
             auto iface = qobject_cast<PluginInterface*>(plugin);
             if (iface) {
                 qDebug() << "Found matching plugin file" << file;
-                SetupResults res = iface->setup(dataInputFrame);
+                SetupResults res = iface->setup();
 
                 LoadedPlugin loaded{
                     iface, res.scene, res.dataFrame, res.menu};

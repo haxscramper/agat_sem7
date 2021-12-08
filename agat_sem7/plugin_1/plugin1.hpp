@@ -28,7 +28,7 @@ class Plugin1
 
     // PluginInterface interface
   public:
-    SetupResults setup(QFrame* dataInputFrame) override;
+    SetupResults setup() override;
     void         tick() override;
 };
 

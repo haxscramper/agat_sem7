@@ -8,9 +8,12 @@
 class Ship : public QGraphicsItem
 {
   public:
-    Ship(int id, double x, double y, int course);
+    Ship(double latitude, double longtitude, int course);
     void setRotat(int course);
-    void setPosition(double x, double y);
+    void setPosition(double latitude, double longtitude);
+    int  getLatitude();
+    int  getLongtitude();
+
 
   protected:
     void paint(

@@ -11,9 +11,7 @@ class MAPWIDGET_EXPORT MapScene : public QGraphicsScene
   public:
     explicit MapScene();
 
-    void drawShip(int id, double x, double y, int course);
-
-    void drawEnemyShip(int id, double x, double y, int course);
+    Ship* addShip();
 
     void drawLine(
         int    idLine,
@@ -35,10 +33,7 @@ class MAPWIDGET_EXPORT MapScene : public QGraphicsScene
     QGraphicsScene* getScene() const;
 
   private:
-    Ship* ship;
-    Ship* enemy_ship;
-
-    void SetupMetrix();
+    QVector<Ship*> ships;
 };
 
 #endif // MAPSCENE_H

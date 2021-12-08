@@ -19,8 +19,8 @@ class PluginInterface
   public:
     virtual ~PluginInterface() = default;
 
-    virtual SetupResults setup(QFrame* dataInputFrame) = 0;
-    virtual void         tick()                        = 0;
+    virtual SetupResults setup() = 0;
+    virtual void         tick()  = 0;
 };
 
 QT_BEGIN_NAMESPACE

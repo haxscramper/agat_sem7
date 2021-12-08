@@ -1,8 +1,9 @@
 #include "ship.hpp"
 
-Ship::Ship(int id, double x, double y, int course) : QGraphicsItem() {
+Ship::Ship(double latitude, double longtitude, int course)
+    : QGraphicsItem() {
     setRotat(course); // устанавливаем курс лодки
-    setPosition(x, y);
+    setPosition(latitude, longtitude);
 
     // в конструкторе заполняем массивы "правых" и "левых" точек
     points1[0] = QPoint(-15, 30); // левый нижний угол лодки
@@ -20,7 +21,12 @@ Ship::Ship(int id, double x, double y, int course) : QGraphicsItem() {
 
 void Ship::setRotat(int course) { this->setRotation(course); }
 
-void Ship::setPosition(double x, double y) { this->setPos(x, y); }
+void Ship::setPosition(double latitude, double longtitude) {
+    this->setPos(latitude, longtitude);
+}
+
+int Ship::getLatitude() { return this->pos().x(); }
+int Ship::getLongtitude() { return this->pos().y(); }
 
 
 void Ship::paint(
