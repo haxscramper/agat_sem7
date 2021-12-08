@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , central(new QSplitter(this))
     , toolbar(new QMenuBar(this))
-    , dataInputFrame(new QFrame(this))
     , map(new QGraphicsView())
     , dataInput(new QFrame(this))
     , zoom(new QSpinBox(this))
@@ -24,7 +23,6 @@ MainWindow::MainWindow(QWidget* parent)
 
     setCentralWidget(central);
 
-    dataInputFrame->setLayout(new QVBoxLayout());
     this->setStatusBar(status);
 
     zoom->setRange(10, 500);
@@ -47,7 +45,6 @@ MainWindow::MainWindow(QWidget* parent)
         &MainWindow::zoomRotationChanged);
 
     central->addWidget(map);
-    central->addWidget(dataInputFrame);
 
     loadPlugins();
 
@@ -60,6 +57,8 @@ MainWindow::MainWindow(QWidget* parent)
 
         connect(
             init, &QAction::triggered, this, &MainWindow::pluginSelected);
+        central->addWidget(plugins[i].frame);
+        plugins[i].frame->hide();
     }
 }
 
@@ -71,16 +70,9 @@ QFrame*    MainWindow::getDataInputFrame() const { return dataInput; }
 void MainWindow::pluginSelected() {
     auto sender = qobject_cast<QAction*>(QObject::sender());
     auto idx    = sender->property("index").toInt();
+    foreach (auto& pl, plugins) { pl.frame->hide(); }
     map->setScene(plugins[idx].scene);
-
-    auto lyt = dataInputFrame->layout();
-
-    QLayoutItem* wItem;
-    while ((wItem = lyt->takeAt(0)) != 0) {
-        lyt->removeItem(wItem);
-    }
-
-    dataInputFrame->layout()->addWidget(plugins[idx].frame);
+    plugins[idx].frame->show();
 }
 
 void MainWindow::zoomRotationChanged() {

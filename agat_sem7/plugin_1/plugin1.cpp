@@ -9,7 +9,7 @@ Plugin1::Plugin1() : scene(new MapScene()), frame(new QFrame()) {}
 
 
 SetupResults Plugin1::setup() {
-    QMenu*   menu   = new QMenu("Plugin 1");
+    QMenu*   menu   = new QMenu("Плагин 1");
     QAction* action = new QAction("Example action", menu);
 
     menu->addAction(action);

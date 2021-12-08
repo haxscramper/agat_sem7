@@ -41,11 +41,10 @@ class MainWindow : public QMainWindow
 
     QVector<LoadedPlugin> plugins;
 
-    QSplitter*     central        = nullptr;
-    QMenuBar*      toolbar        = nullptr;
-    QFrame*        dataInputFrame = nullptr;
-    QGraphicsView* map            = nullptr;
-    QFrame*        dataInput      = nullptr;
+    QSplitter*     central   = nullptr;
+    QMenuBar*      toolbar   = nullptr;
+    QGraphicsView* map       = nullptr;
+    QFrame*        dataInput = nullptr;
 
     QSpinBox *zoom, *rotation;
 
