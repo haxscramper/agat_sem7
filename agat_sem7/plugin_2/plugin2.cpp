@@ -59,7 +59,7 @@ Plugin2::Plugin2()
 
 void Plugin2::updatePositions() {
   target->setPosition(latitude->value(), longtitude->value());
-  target->setRotat(piling->value());
+  target->setAngle(piling->value());
 }
 
 SetupResults Plugin2::setup() {

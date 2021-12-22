@@ -6,51 +6,52 @@
 #include "mapscene.hpp"
 #include "plugininterface.hpp"
 
-#include "statusbar.hpp"
 #include <QFrame>
 #include <QGraphicsView>
 #include <QMenuBar>
 #include <QSpinBox>
 #include <QSplitter>
 #include <QVector>
+#include "statusbar.hpp"
 
+class MainWindow : public QMainWindow {
+  Q_OBJECT
+ public:
+  explicit MainWindow(QWidget* parent = nullptr);
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
-  public:
-    explicit MainWindow(QWidget* parent = nullptr);
+  QSplitter* getCentral() const;
+  QMenuBar* getToolbar() const;
+  QFrame* getDataInputFrame() const;
 
-    QSplitter* getCentral() const;
-    QMenuBar*  getToolbar() const;
-    QFrame*    getDataInputFrame() const;
+ signals:
 
-  signals:
+ private slots:
+  void pluginSelected();
+  void zoomRotationChanged();
 
-  private slots:
-    void pluginSelected();
-    void zoomRotationChanged();
+ private:
+  void selectPlugin(int idx);
 
-  private:
-    struct LoadedPlugin {
-        PluginInterface* iface;
-        MapScene*        scene;
-        QFrame*          frame;
-        QMenu*           menu;
-    };
+ private:
+  struct LoadedPlugin {
+    PluginInterface* iface;
+    MapScene* scene;
+    QFrame* frame;
+    QMenu* menu;
+  };
 
-    QVector<LoadedPlugin> plugins;
+  QVector<LoadedPlugin> plugins;
 
-    QSplitter*     central   = nullptr;
-    QMenuBar*      toolbar   = nullptr;
-    QGraphicsView* map       = nullptr;
-    QFrame*        dataInput = nullptr;
+  QSplitter* central = nullptr;
+  QMenuBar* toolbar = nullptr;
+  QGraphicsView* map = nullptr;
+  QFrame* dataInput = nullptr;
 
-    QSpinBox *zoom, *rotation;
+  QSpinBox *zoom, *rotation;
 
-    StatusBar* status = nullptr;
+  StatusBar* status = nullptr;
 
-    void loadPlugins();
+  void loadPlugins();
 };
 
-#endif // MAINWINDOW_HPP
+#endif  // MAINWINDOW_HPP

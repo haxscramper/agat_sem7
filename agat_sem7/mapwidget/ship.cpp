@@ -1,16 +1,18 @@
 #include "ship.hpp"
+#include <QtDebug>
 
 Ship::Ship(double latitude, double longtitude, int course) : QGraphicsItem() {
-  setRotat(course);  // устанавливаем курс лодки
+  setAngle(course);  // устанавливаем курс лодки
   setPosition(latitude, longtitude);
 }
 
-void Ship::setRotat(int course) {
+void Ship::setAngle(int course) {
   this->setRotation(course);
+  angle = course;
 }
 
 void Ship::setPosition(double latitude, double longtitude) {
-  this->setPos(latitude, longtitude);
+  this->setPos(latitude, -longtitude);
 }
 
 int Ship::getLatitude() {
@@ -33,7 +35,6 @@ void Ship::paint(QPainter* painter,
   points1[0] = QPoint(-15, 30);  // левый нижний угол лодки
   points1[1] = QPoint(-15, -0);  // левый верхний угол лодки
   points1[2] = QPoint(0, -30);   // нос лодки
-  points1[3] = QPoint(0, -40);   // направление лодки
   points1[4] = QPoint(0, 30);
 
   // отзеркаливаем правую часть
@@ -42,20 +43,27 @@ void Ship::paint(QPainter* painter,
     points2[i].setY(points1[i].y());
   }
 
-  QPolygon pol, pol2;
-
-  pol << points1[0] << points1[1] << points1[2] << points1[3] << points1[4];
-  pol2 << points2[0] << points2[1] << points2[2] << points1[3] << points1[4];
-
-  //устанавливаем цвет и рисуем
   painter->setBrush(color);
-  painter->drawPolygon(pol);
-  painter->drawPolygon(pol2);
+  painter->drawPolygon(QPolygon() << points1[0] << points1[1] << points1[2]
+                                  << points1[3] << points1[4]);
+  painter->drawPolygon(QPolygon() << points2[0] << points2[1] << points2[2]
+                                  << points1[3] << points1[4]);
+
+  //  qDebug() << "Drawing with speed " << speed;?
+  painter->drawLine(QPoint(0, -30), QPoint(0, -30 - speed));
 }
 
 QRectF Ship::boundingRect() const {
-  return QRectF(-15, -40, 30, 70);  // прямоугольник, в который будет
-                                    // вписана наша лодка
+  const int offset = 120;
+  return QRectF(-offset, -offset - speed, offset, offset);
+}
+
+float Ship::getSpeed() const {
+  return speed;
+}
+
+void Ship::setSpeed(float newSpeed) {
+  speed = newSpeed;
 }
 
 void Ship::setColor(const QColor& newColor) {

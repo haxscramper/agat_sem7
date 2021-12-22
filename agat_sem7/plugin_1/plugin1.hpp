@@ -24,7 +24,7 @@ class Plugin1 : public QObject, PluginInterface {
   MapScene* scene;
   QFrame* frame;
 
-  QSpinBox *time, *latitude, *longtitude, *piling, *distance, *course, *speed;
+  QSpinBox *min_speed, *latitude, *longtitude, *piling, *distance, *course, *speed;
 
   QPushButton* eval;
 

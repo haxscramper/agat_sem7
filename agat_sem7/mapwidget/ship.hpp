@@ -9,12 +9,15 @@
 class Ship : public QGraphicsItem {
  public:
   Ship(double latitude, double longtitude, int course);
-  void setRotat(int course);
+  void setAngle(int course);
   void setPosition(double latitude, double longtitude);
   int getLatitude();
   int getLongtitude();
 
   void setColor(const QColor& newColor);
+
+  float getSpeed() const;
+  void setSpeed(float newSpeed);
 
  protected:
   void paint(
@@ -26,6 +29,8 @@ class Ship : public QGraphicsItem {
 
  private:
   QColor color;
+  float speed = 0;
+  int angle = 0;
 };
 
 #endif  // SHIP_H

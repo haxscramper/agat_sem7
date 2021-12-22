@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget* parent)
     central->addWidget(plugins[i].frame);
     plugins[i].frame->hide();
   }
+
+  selectPlugin(0);
 }
 
 QSplitter* MainWindow::getCentral() const {
@@ -67,12 +69,16 @@ QFrame* MainWindow::getDataInputFrame() const {
   return dataInput;
 }
 
-void MainWindow::pluginSelected() {
-  auto sender = qobject_cast<QAction*>(QObject::sender());
-  auto idx = sender->property("index").toInt();
+void MainWindow::selectPlugin(int idx) {
   foreach (auto& pl, plugins) { pl.frame->hide(); }
   map->setScene(plugins[idx].scene);
   plugins[idx].frame->show();
+}
+
+void MainWindow::pluginSelected() {
+  auto sender = qobject_cast<QAction*>(QObject::sender());
+  auto idx = sender->property("index").toInt();
+  selectPlugin(idx);
 }
 
 void MainWindow::zoomRotationChanged() {

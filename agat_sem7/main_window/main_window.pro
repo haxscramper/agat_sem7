@@ -1,15 +1,8 @@
 QT       += core gui widgets
 CONFIG += c++11
 
-SOURCES += \
-    main.cpp \
-    mainwindow.cpp \
-    statusbar.cpp
-
-HEADERS += \
-    mainwindow.hpp \
-    plugininterface.hpp \
-    statusbar.hpp
+SOURCES += *.cpp
+HEADERS += *.hpp
 
 TARGET = agat_sem7
 DESTDIR =  $$PWD/..
