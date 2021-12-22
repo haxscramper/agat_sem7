@@ -22,6 +22,9 @@ int main(int argc, char* argv[]) {
     w.resize(600, 800);
 
     w.show();
+
+    w.move(QCursor::pos() - QPoint(w.width() / 2, w.height() / 2));
+
     return a.exec();
 
     qDebug() << "Execution ok";
