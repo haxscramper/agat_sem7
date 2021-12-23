@@ -95,13 +95,10 @@ const double pi     = 3.14159263;
 const double rad    = pi / 180.0;
 const double invrad = 180.0 / pi;
 
-double calculateAngle(
-    double P1X,
-    double P1Y,
-    double P2X,
-    double P2Y,
-    double P3X,
-    double P3Y) {
+double calculateAngle(double P1X, double P1Y, double P3X, double P3Y) {
+
+    double P2X = 0;
+    double P2Y = 0;
 
     double numerator = P2Y * (P1X - P3X) + P1Y * (P3X - P2X)
                        + P3Y * (P2X - P1X);
@@ -126,21 +123,32 @@ void Plugin1::updatePositions() {
     double target_course = course->value();
     double our_speed     = min_speed->value();
 
+    while (target_course < 0) {
+        target_course += 360;
+    }
+    while (360 < target_course) {
+        target_course -= 360;
+    }
+
     double target_x = distance->value() * std::cos(pelleng->value() * rad);
     double target_y = distance->value() * std::sin(pelleng->value() * rad);
 
     double t = 2;
 
     double target_x_after = target_x
-                            + target_speed * std::sin(target_course * rad)
+                            + target_speed * std::cos(target_course * rad)
                                   * t;
 
     double target_y_after = target_y
-                            + target_speed * std::cos(target_course * rad)
+                            + target_speed * std::sin(target_course * rad)
                                   * t;
-    double our_course = calculateAngle(
-        target_x_after, target_y_after, 0, 0, target_x, target_y);
 
+
+    double our_course;
+
+
+    our_course = calculateAngle(
+        target_x_after, target_y_after, target_x, target_y);
 
     krek->setText(QString::number(our_course));
     vrek->setText(QString::number(our_speed));
