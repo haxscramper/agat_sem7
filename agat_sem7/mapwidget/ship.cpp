@@ -19,6 +19,8 @@ void Ship::setPosition(double latitude, double longtitude) {
 int Ship::getLatitude() { return this->pos().x(); }
 int Ship::getLongtitude() { return this->pos().y(); }
 
+const int forward_ray = 250;
+
 void Ship::paint(
     QPainter*                       painter,
     const QStyleOptionGraphicsItem* option,
@@ -52,11 +54,14 @@ void Ship::paint(
     //  qDebug() << "Drawing with speed " << speed;?
     painter->drawLine(QPoint(0, -30), QPoint(0, -30 - speed));
 
-    //    painter->drawRect(boundingRect());
+    painter->setBrush(Qt::magenta);
+    painter->setPen(Qt::DashDotLine);
+
+    painter->drawLine(QPoint(0, -30), QPoint(0, -30 - forward_ray));
 }
 
 QRectF Ship::boundingRect() const {
-    const int b = 120;
+    const int b = 120 + forward_ray;
     return QRectF(-b / 2, -b / 2, b, b);
 }
 

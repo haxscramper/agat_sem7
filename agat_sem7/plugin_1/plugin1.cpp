@@ -32,7 +32,7 @@ Plugin1::Plugin1()
         l->addRow(new QLabel("Объект манёвра (Корабль):"));
         l->addRow(new QLabel("Широта °"), latitude);
         l->addRow(new QLabel("Долгота °"), longtitude);
-        l->addRow(new QLabel("Пилинг °"), pelleng);
+        l->addRow(new QLabel("Пеленг °"), pelleng);
 
         l->addRow(new QLabel("Дистанция, каб"), distance);
 
@@ -80,47 +80,79 @@ Plugin1::Plugin1()
     }
 }
 
+template <typename T>
+int sign(T arg) {
+    if (arg < 0) {
+        return -1;
+    } else if (arg > 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+const double pi     = 3.14159263;
+const double rad    = pi / 180.0;
+const double invrad = 180.0 / pi;
+
+double calculateAngle(
+    double P1X,
+    double P1Y,
+    double P2X,
+    double P2Y,
+    double P3X,
+    double P3Y) {
+
+    double numerator = P2Y * (P1X - P3X) + P1Y * (P3X - P2X)
+                       + P3Y * (P2X - P1X);
+    double denominator = (P2X - P1X) * (P1X - P3X)
+                         + (P2Y - P1Y) * (P1Y - P3Y);
+    double ratio = numerator / denominator;
+
+    double angleRad = std::atan(ratio);
+    double angleDeg = (angleRad * 180) / pi;
+
+    if (angleDeg < 0) {
+        angleDeg = 180 + angleDeg;
+    }
+
+    return angleDeg;
+}
+
 void Plugin1::updatePositions() {
-    target->setPosition(
-        distance->value() * std::cos(course->value()),
-        distance->value() * std::sin(course->value()));
+
+
+    double target_speed  = speed->value();
+    double target_course = course->value();
+    double our_speed     = min_speed->value();
+
+    double target_x = distance->value() * std::cos(pelleng->value() * rad);
+    double target_y = distance->value() * std::sin(pelleng->value() * rad);
+
+    double t = 2;
+
+    double target_x_after = target_x
+                            + target_speed * std::sin(target_course * rad)
+                                  * t;
+
+    double target_y_after = target_y
+                            + target_speed * std::cos(target_course * rad)
+                                  * t;
+    double our_course = calculateAngle(
+        target_x_after, target_y_after, 0, 0, target_x, target_y);
+
+
+    krek->setText(QString::number(our_course));
+    vrek->setText(QString::number(our_speed));
+
+    target->setPosition(target_x, target_y);
 
     target->setAngle(course->value());
     target->setSpeed(speed->value());
 
 
-    // Параметры  объекта ман\вра
-    double pelleng_v = pelleng->value();
-    double speed_k   = speed->value();
-    double course_k  = course->value();
-    double D         = distance->value();
-    // Скорость нашего корабля
-    double speed_m = min_speed->value();
-
-    {
-        double Qk = pelleng_v - course_k;
-        //        cout << Qk << endl;
-        if (Qk < 0) {
-            Qk = 180 + Qk;
-        }
-
-        const double pi = 3.14159263;
-
-        double sinQm    = speed_k * std::sin(Qk * pi / 180) / speed_m;
-        double Qm       = std::asin(sinQm) * 180.0 / pi;
-        double course_m = pelleng_v - Qm;
-        double vir_k    = -speed_k * std::cos(Qk * pi / 180);
-        double vir_m    = -speed_m * std::cos(Qm * pi / 180);
-        double ovir     = vir_k + vir_m;
-        double t        = D / ovir;
-        //        cout << t << endl;
-
-        krek->setText(QString::number(course_m));
-        vrek->setText(QString::number(speed_m));
-
-        current->setSpeed(speed_m);
-        current->setAngle(course_m);
-    }
+    current->setSpeed(our_speed);
+    current->setAngle(our_course);
 }
 
 SetupResults Plugin1::setup() {
@@ -135,8 +167,8 @@ SetupResults Plugin1::setup() {
 
     latitude->setValue(50);
     longtitude->setValue(200);
-    distance->setValue(50);
-    course->setValue(120);
+    distance->setValue(150);
+    course->setValue(-30);
     speed->setValue(12);
     min_speed->setValue(15);
 
